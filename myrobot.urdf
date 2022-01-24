@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<robot name="myrobot">
+
+  <material name="green">
+    <color rgba="0 0.5 0 1"/>
+  </material>
+  <material name="transparent">
+    <color rgba="0 0.5 0 0"/>
+  </material>
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.6 0.6 0.05"/>
+      </geometry>
+      <material name="transparent"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.6 0.6 0.05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="body_link">
+    <visual>
+      <geometry>
+        <box size="0.6 0.6 0.1"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.6 0.6 0.1"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="eye_link">
+    <visual>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="base_to_body" type="fixed">
+    <parent link="base_link"/>
+    <child link="body_link"/>
+    <origin xyz="0 0 0.1"/>
+  </joint>
+
+  <joint name="body_to_eye" type="fixed">
+    <parent link="body_link"/>
+    <child link="eye_link"/>
+    <origin xyz="0.18 0 0.05"/>
+  </joint>
+
+<link name="world_link"/>
+<link name="base_link_0"/>
+<link name="base_link_1"/>
+
+
+  <joint name="x" type="prismatic">
+    <limit lower="-4.8" upper="4.8"/>
+    <parent link="world_link"/>
+    <child link="base_link_0"/>
+    <axis xyz="1 0 0"/>
+  </joint>
+  <joint name="y" type="prismatic">
+    <limit lower="-4.8" upper="4.8"/>
+    <parent link="base_link_0"/>
+    <child link="base_link_1"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+  <joint name="theta" type="continuous">
+    <parent link="base_link_1"/>
+    <child link="base_footprint"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="base_footprint">
+    <inertial>
+      <mass value="1.0"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="White"/>
+    </visual>
+    <collision group="non_gripper">
+      <!-- represent base collision with a simple rectangular model, positioned by base_size_z s.t. top
+             surface of the collision box matches the top surface of the PR2 base -->
+      <origin rpy="0 0 0" xyz="0 0 0.071"/>
+      <geometry>
+        <box size="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="base_footprint_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0.051"/>
+    <child link="base_link"/>
+    <parent link="base_footprint"/>
+  </joint>
+
+
+
+</robot>
+
